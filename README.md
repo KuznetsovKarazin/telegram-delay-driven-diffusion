@@ -1,68 +1,34 @@
 # Telegram Delay-Driven Diffusion
 
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-
-This repository contains the code and analysis pipeline for a study of
-
-information diffusion in Telegram. The project combines large-scale
-
-data processing, cascade reconstruction, delay distribution modeling,
-
-and competing diffusion analysis.
-
-
-
-The code is designed to work with the Pushshift Telegram dataset
-
-(`accounts.ndjson.zst`, `channels.ndjson.zst`, `messages.ndjson.zst`)
-
-and reproduces the main empirical results used in our article.
-
-
+This repository contains the code and analysis pipeline for a study of information diffusion in Telegram. The project combines large-scale data processing, cascade reconstruction, delay distribution modeling, and competing diffusion analysis. 
+The code is designed to work with the Pushshift Telegram dataset (`accounts.ndjson.zst`, `channels.ndjson.zst`, `messages.ndjson.zst`) and reproduces the main empirical results used in our article.
 
 ---
-
-
 
 ## 1. Project goals
 
 
+- Extract and summarize large-scale statistics of Telegram channels, accounts, and messages.
 
-- Extract and summarize large-scale statistics of Telegram channels,
+- Reconstruct forwarding cascades and study their sizes, temporal spans, and depth.
 
-&nbsp; accounts, and messages.
+- Model forwarding delays using parametric distributions (Weibull, Lognormal).
 
-- Reconstruct forwarding cascades and study their sizes, temporal spans,
-
-&nbsp; and depth.
-
-- Model forwarding delays using parametric distributions
-
-&nbsp; (Weibull, Lognormal).
-
-- Validate a delay-driven star diffusion model at per-cascade and
-
-&nbsp; pooled levels.
+- Validate a delay-driven star diffusion model at per-cascade and pooled levels.
 
 - Analyze (the near absence of) competing diffusion between cascades.
 
-
-
-The code focuses on transparency and reproducibility: each step produces
-
-both figures and CSV tables that can be directly used in a research
-
-article.
-
+The code focuses on transparency and reproducibility: each step produces both figures and CSV tables that can be directly used in a research article.
 
 
 ---
 
 
-
 ## 2. Repository structure
-
-
 
 - `README.md` - this file.
 
@@ -76,74 +42,42 @@ article.
 
 Main scripts (run sequentially):
 
+1. `analysis\_telegram\_pushshift.py` Global statistics and basic dataset description.
 
+2. `extract\_forwarding\_cascades.py` Extraction of largest forwarding cascades and basic cascade-level summaries.
 
-1. `analysis\_telegram\_pushshift.py`  
+3. `prepare\_delays\_for\_model.py` Preparation of delay curves for parametric modeling.
 
-&nbsp;  Global statistics and basic dataset description.
+4. `fit\_delay\_distribution.py` Fitting Weibull and Lognormal models to cascading delays.
 
+5. `simulate\_star\_delay\_model.py` Validation of the delay-driven star diffusion model (per-cascade and pooled).
 
-
-2. `extract\_forwarding\_cascades.py`  
-
-&nbsp;  Extraction of largest forwarding cascades and basic cascade-level
-
-&nbsp;  summaries.
-
-
-
-3. `prepare\_delays\_for\_model.py`  
-
-&nbsp;  Preparation of delay curves for parametric modeling.
-
-
-
-4. `fit\_delay\_distribution.py`  
-
-&nbsp;  Fitting Weibull and Lognormal models to cascading delays.
-
-
-
-5. `simulate\_star\_delay\_model.py`  
-
-&nbsp;  Validation of the delay-driven star diffusion model
-
-&nbsp;  (per-cascade and pooled).
-
-
-
-6. `simulate\_competing\_diffusion.py`  
-
-&nbsp;  Analysis of competing diffusion between overlapping cascades.
-
+6. `simulate\_competing\_diffusion.py` Analysis of competing diffusion between overlapping cascades.
 
 
 Folders created by the pipeline:
-
 
 
 - `Data/` - raw Pushshift Telegram dataset (not tracked by git).
 
 - `Results/` - all generated tables and figures (not tracked by git).
 
-&nbsp; - `Results/figures/`
+* `Results/figures/`
 
-&nbsp; - `Results/tables/`
+* `Results/tables/`
 
-&nbsp; - `Results/cascades/`
+* `Results/cascades/`
 
-&nbsp; - `Results/model\_inputs/`
+* `Results/model\_inputs/`
 
-&nbsp; - `Results/delay\_fit/`
+* `Results/delay\_fit/`
 
-&nbsp; - `Results/star\_model\_sim/`
+* `Results/star\_model\_sim/`
 
-&nbsp; - `Results/competing\_diffusion/`
-
+* `Results/competing\_diffusion/`
 
 
 ---
-
 
 
 ## 3. Requirements
@@ -158,11 +92,11 @@ Folders created by the pipeline:
 
 - Disk: at least 150 GB free space for:
 
-&nbsp; - original Pushshift files,
+* original Pushshift files,
 
-&nbsp; - intermediate compressed CSV/NDJSON,
+* intermediate compressed CSV/NDJSON,
 
-&nbsp; - generated results.
+* generated results.
 
 
 
@@ -176,10 +110,9 @@ python -m venv env
 
 source env/bin/activate          # Linux / macOS
 
-\# or
+# or
 
-env\\Scripts\\activate             # Windows PowerShell / CMD
-
+env\Scripts\activate             # Windows PowerShell / CMD
 
 
 pip install -r requirements.txt
@@ -236,7 +169,7 @@ section of the article.
 
 ### 5.2 Forwarding cascades extraction
 
-Script: extract_forwarding_cascades.py
+Script: `extract_forwarding_cascades.py`
 
 This step reconstructs forwarding cascades from the messages dataset.
 It identifies original messages and all their forwards, builds edges
@@ -270,9 +203,7 @@ and confirm that most cascades are shallow (star-shaped).
 
 Script: `prepare_delays_for_model.py`
 
-This step converts raw edge-level delays into regular time series
-suitable for parametric modeling: cumulative forwards C(t) and forwarding
-rates λ(t). Cascades are binned in fixed time intervals.
+This step converts raw edge-level delays into regular time series suitable for parametric modeling: cumulative forwards C(t) and forwarding rates λ(t). Cascades are binned in fixed time intervals.
 
 Example:
 ```bash
@@ -285,8 +216,7 @@ python prepare_delays_for_model.py \
 
 Key outputs:
 
-Results/model_inputs/model_inputs_summary.csv - core statistics per cascade
-(size, temporal span, mean/median delays, T10/T50/T90, peak speed).
+Results/model_inputs/model_inputs_summary.csv - core statistics per cascade (size, temporal span, mean/median delays, T10/T50/T90, peak speed).
 
 `Results/model_inputs/curves/<cascade_id>_C.csv` - C(t) curves.
 
@@ -300,9 +230,7 @@ These curves are the empirical basis for fitting delay distributions.
 
 Script: `fit_delay_distribution.py`
 
-For each cascade, this step fits Weibull and Lognormal distributions
-to the observed delays and performs model selection via AIC. It also
-fits a pooled distribution across all cascades.
+For each cascade, this step fits Weibull and Lognormal distributions to the observed delays and performs model selection via AIC. It also fits a pooled distribution across all cascades.
 
 Example:
 ```bash
@@ -322,16 +250,13 @@ parameters; global AIC comparison.
 
 `Results/delay_fit/figures/*` - CDFs and histograms with fitted curves.
 
-These results show that a sub-Weibull distribution (shape k < 1)
-captures global delay patterns in Telegram.
+These results show that a sub-Weibull distribution (shape k < 1) captures global delay patterns in Telegram.
 
 ### 5.5 Star diffusion model validation
 
 Script: `simulate_star_delay_model.py`
 
-This step validates the delay-driven star diffusion model. For each
-cascade, it predicts C(t) and λ(t) using the fitted parameters and
-compares them to the empirical curves.
+This step validates the delay-driven star diffusion model. For each cascade, it predicts C(t) and λ(t) using the fitted parameters and compares them to the empirical curves.
 
 Example:
 ```bash
@@ -359,18 +284,13 @@ Key outputs:
 
 `pooled_lambda_pred_vs_obs.png`
 
-These figures demonstrate that the Weibull-based star model fits
-organic cascades very well, while highlighting deviations due to
-administrative bursts.
+These figures demonstrate that the Weibull-based star model fits organic cascades very well, while highlighting deviations due to administrative bursts.
 
 ### 5.6 Competing diffusion analysis
 
 Script: `simulate_competing_diffusion.py`
 
-Finally, we explore whether cascades compete for attention. The script
-selects pairs of overlapping cascades, builds competing intensities
-based on delay-driven λ(t), and compares predicted and observed
-competing C(t) curves.
+Finally, we explore whether cascades compete for attention. The script selects pairs of overlapping cascades, builds competing intensities based on delay-driven λ(t), and compares predicted and observed competing C(t) curves. 
 
 Example:
 ```bash
@@ -398,23 +318,29 @@ cascade pairs, overlap, winners, and intersection times.
 
 `pair_<A>__<B>_pred_vs_obs.png`
 
-The empirical results show that direct competition is rare: one cascade
-typically dominates while the other receives little attention.
+The empirical results show that direct competition is rare: one cascade typically dominates while the other receives little attention.
 
 ## 6. Reproducibility and usage notes
 
 All scripts are pure Python and operate on CSV/NDJSON/ZST files.
 
-The code was designed to run on a single powerful workstation
-(e.g., AMD Ryzen 7, 64 GB RAM). Most steps are CPU-bound but can
-take several hours due to dataset size.
+The code was designed to run on a single powerful workstation (e.g., AMD Ryzen 7, 64 GB RAM). Most steps are CPU-bound but can take several hours due to dataset size.
 
-Data directories (Data, Results) are excluded from version
-control to keep the repository lightweight.
+Data directories (Data, Results) are excluded from version control to keep the repository lightweight.
 
 ## 7. Citation
 
-If you use this code or analysis in your research, please cite the
-corresponding article (reference to be added when available).
+If you use this code or analysis in your research, please cite the corresponding article (reference to be added when available).
 
+### 8. Acknowledgments
+
+- Baumgartner, J., Zannettou, S., Squire, M. and Blackburn, J. for providing the OThe Pushshift Telegram Dataset (https://zenodo.org/records/3607497)
+- All contributors and users of this system
+
+### 9. Contact
+
+For questions or collaboration opportunities:
+- **Email**: oleksandr.o.kuznetsov@gmail.com
+
+---
 
