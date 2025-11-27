@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+env/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Data and results (large, local only)
+Data/
+Results/
+
+# Compressed datasets
+*.zst
+*.gz
+*.bz2
+*.zip
+*.7z
+
+# OS-specific
+.DS_Store
+Thumbs.db
