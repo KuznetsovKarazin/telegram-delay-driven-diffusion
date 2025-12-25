@@ -16,6 +16,8 @@ venv/
 # Data and results (large, local only)
 Data/
 Results/
+!Results/validation/
+!Results/validation/**
 
 # Compressed datasets
 *.zst

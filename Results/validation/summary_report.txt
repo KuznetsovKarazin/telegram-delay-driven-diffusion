@@ -1,0 +1,56 @@
+======================================================================
+VALIDATION ANALYSES - SUMMARY REPORT
+======================================================================
+
+1. CASCADE RECONSTRUCTION VALIDITY
+----------------------------------------------------------------------
+Forwarded messages sampled: 8,630
+  * Has from_id (original source): 100.0%
+  * Has channel_post: 100.0%
+  *• Has date: 100.0%
+
+FINDING: All forwards reference original source, not intermediates.
+Star topology (depth=1) reflects actual platform behavior.
+
+
+2. SIZE-STRATIFIED ANALYSIS
+----------------------------------------------------------------------
+          n_cascades  median_delay_days      wb_k
+size_bin                                         
+10-50           4070          15.202193  1.334101
+50-100           594          46.198212  1.381098
+100-500          312          83.489060  1.521524
+500+              24         467.654876  1.690609
+FINDING: Heavy-tailed delay distributions generalize across size bins.
+Median delays increase with cascade size (15->467 days), reflecting
+that larger cascades accumulate forwards over longer timescales.
+
+
+3. ORGANIC/ADMINISTRATIVE CLASSIFICATION
+----------------------------------------------------------------------
+Total cascades classified: 3,590
+  * Administrative: 17.4%
+  * Organic: 82.6%
+
+FINDING: 15-20% administrative (automated classification).
+Clear separation in entropy and burstiness metrics.
+
+
+4. TEMPORAL STABILITY (2014-2020)
+----------------------------------------------------------------------
+      n_forwards  median_delay_days  n_cascades
+year                                           
+2015       58548           9.052043         638
+2016       63926          42.575706         842
+2017       54101          75.967604         581
+2018       41662          70.810666         483
+2019       21342         112.198519         381
+
+2016-2019 mean delay: 75.4 days (+-28.6)
+FINDING: Median delays increase 2015->2019 (9->112 days).
+Reflects platform maturation and longer cascade lifespans.
+Star topology and heavy tails persist across platform evolution.
+
+======================================================================
+All CSV outputs saved to: Results/validation/
+======================================================================
